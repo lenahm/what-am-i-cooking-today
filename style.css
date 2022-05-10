@@ -1,0 +1,101 @@
+@import url('https://fonts.googleapis.com/css2?family=Indie+Flower&family=Quicksand&display=swap');
+
+body {
+  background: url('img/background.jpg');
+  display: flex;
+  font-family: 'Quicksand', sans-serif;
+}
+
+.container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(158, 114, 114, 0.8);
+  z-index: -1;
+}
+
+.container {
+  width: 1200px;
+  height: 80vh;
+  overflow: hidden;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  margin: 50px auto;
+  background-color: rgba(175, 144, 144, 0.8);
+  border-radius: 10px;
+}
+
+h1 {
+  text-transform: uppercase;
+  font-family: 'Indie Flower', cursive;
+  font-size: 90px;
+  color: #fff;
+}
+
+.search {
+  display: flex;
+  justify-content: center;
+  margin: auto;
+  padding: 30px 0;
+  background-color: rgba(255, 115, 0, 0.3);
+  border-radius: 10px;
+  width: 1050px;
+}
+
+input[type='text'] {
+  width: 400px;
+  font-family: inherit;
+  padding: 10px;
+  border: none;
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+}
+
+button {
+  cursor: pointer;
+  width: 50px;
+  height: 50px;
+  border: none;
+  border-radius: 50px;
+  background-color: #fff;
+  margin-left: 20px;
+}
+
+button:first-of-type {
+  border-radius: 0px;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  margin-left: 0px;
+}
+
+input[type='text']:focus,
+button {
+  outline: none;
+}
+
+.countries-and-categories {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.countries,
+.categories {
+  background-color: rgba(255, 217, 0, 0.3);
+  border-radius: 10px;
+  width: 500px;
+  padding: 10px;
+}
+
+.countries {
+  margin-right: 15px;
+}
+
+img {
+  height: 40px;
+  width: 40px;
+}
