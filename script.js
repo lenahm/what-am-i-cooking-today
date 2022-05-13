@@ -74,7 +74,6 @@ function insertMealsIntoMealsDiv(data, resultHeadingName) {
 }
 
 function getMealDetailsById(id, isRandomMeal) {
-    console.log(isRandomMeal); 
     fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`)
         .then(res => res.json())
         .then(data => {
@@ -249,13 +248,7 @@ submit.addEventListener('submit', showAllMealsForSearchString);
 randomBtn.addEventListener('click', getRandomMealId); 
 
 meals.addEventListener('click', e => {
-    const mealInfo = e.path.find(item => {
-        if (item.classList) {
-            return item.classList.contains('meal-info'); 
-        } else {
-            return false; 
-        }
-    }); 
+    const mealInfo = e.path.find(item => itemContainsSpecificClass(item, 'meal-info')); 
 
     if (mealInfo) {
         const mealId = mealInfo.getAttribute('data-mealid');
@@ -281,13 +274,7 @@ backBtn.addEventListener('click', (e) => {
 });
 
 categories.addEventListener('click', e => {
-    const categoryTag = e.path.find(item => {
-        if (item.classList) {
-            return item.classList.contains('tags'); 
-        } else {
-            return false; 
-        }
-    }); 
+    const categoryTag = e.path.find(item => itemContainsSpecificClass(item, 'tags')); 
 
     if (categoryTag) {
         const categoryName = categoryTag.getAttribute('tagname'); 
@@ -296,16 +283,18 @@ categories.addEventListener('click', e => {
 }); 
 
 countries.addEventListener('click', e => {
-    const countryTag = e.path.find(item => {
-        if (item.classList) {
-            return item.classList.contains('tags'); 
-        } else {
-            return false; 
-        }
-    }); 
+    const countryTag = e.path.find(item => itemContainsSpecificClass(item, 'tags')); 
 
     if (countryTag) {
         const countryName = countryTag.getAttribute('tagname'); 
         showAllMealsForCountry(countryName); 
     }
 }); 
+
+function itemContainsSpecificClass(item, className) {
+    if (item.classList) {
+        return item.classList.contains(className); 
+    } else {
+        return false; 
+    }
+}
