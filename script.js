@@ -47,7 +47,12 @@ function showAllMealsForCategory(categoryName) {
     fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?c=${categoryName}`)
         .then(res => res.json())
         .then(data => {
-            insertMealsIntoMealsDiv(data, categoryName); 
+            if (categoryName === 'Dessert') {
+                data = data.meals.slice(0, 45);
+                insertMealsIntoMealsDiv(data, categoryName);
+            } else {
+                insertMealsIntoMealsDiv(data.meals, categoryName); 
+            }
         });
 }
 
@@ -55,7 +60,12 @@ function showAllMealsForCountry(countryName) {
     fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?a=${countryName}`)
         .then(res => res.json())
         .then(data => {
-            insertMealsIntoMealsDiv(data, countryName); 
+            if (countryName === 'British') {
+                data = data.meals.slice(0, 45); 
+                insertMealsIntoMealsDiv(data, countryName); 
+            } else {
+                insertMealsIntoMealsDiv(data.meals, countryName); 
+            }
         });
 }
 
@@ -63,7 +73,7 @@ function insertMealsIntoMealsDiv(data, resultHeadingName) {
     hideElementsForMealsOverviewPage(); 
 
     resultHeading.innerHTML = `<h3>Results for "${resultHeadingName}"</h3>`;
-    meals.innerHTML = data.meals.map(meal => `
+    meals.innerHTML = data.map(meal => `
         <div class="meal">
             <img src="${meal.strMealThumb}" alt="${meal.strMeal}" />
             <div class="meal-info" data-mealID="${meal.idMeal}">
