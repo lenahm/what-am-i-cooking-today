@@ -11,6 +11,9 @@ const resultHeading = document.querySelector('.result-heading');
 const meals = document.querySelector('.meals'); 
 const singleMealInfo = document.querySelector('.single-meal-info'); 
 
+showCategoriesOnStartPage(); 
+showCountriesOnStartPage();
+
 // -------------------- main functionalites - search for a specific meal, get a random meal and search by categories or countries --------------------
 
 function showAllMealsForSearchString(e) {
@@ -102,17 +105,45 @@ function getRandomMealId() {
         .then(data => getMealDetailsById(data.meals[0].idMeal, true)); 
 }
 
-// function searchMealByCategories() {
-//     // TODO 
-//     // https://www.themealdb.com/api/json/v1/1/categories.php delivers categories 
-//     // https://www.themealdb.com/api/json/v1/1/filter.php?c=Seafood search for a meal by a categorie (e.g. seafood)
-// }
+function showCategoriesOnStartPage() {
+    fetch('https://www.themealdb.com/api/json/v1/1/categories.php')
+        .then(res => res.json())
+        .then(data => {
+            data.categories.map(category => {
+                // get parent- and insert-after-element 
+                const categories = document.querySelector('.categories'); 
+                const categoriesHeading = document.querySelector('#categories-heading'); 
 
-// function searchMealByNationality() {
-//     // TODO
-//     // https://www.themealdb.com/api/json/v1/1/list.php?a=list delivers nationalities 
-//     // https://www.themealdb.com/api/json/v1/1/filter.php?a=Canadian search for a meal by a nationality (e.g. canadian)
-// }
+                addTagElementToDOM(category.strCategory, categories, categoriesHeading); 
+            }); 
+        }); 
+}
+
+function showCountriesOnStartPage() {
+    fetch('https://www.themealdb.com/api/json/v1/1/list.php?a=list')
+        .then(res => res.json())
+        .then(data => {
+            data.meals.map(country => {
+                // get parent- and insert-after-element 
+                const countries = document.querySelector('.countries'); 
+                const countriesHeading = document.querySelector('#countries-heading'); 
+
+                addTagElementToDOM(country.strArea, countries, countriesHeading); 
+            })
+        })
+}
+
+function addTagElementToDOM(categoryName, parentElement, insertAfterElement) {
+    const span = document.createElement('span'); 
+    span.className = 'tags'; 
+    span.appendChild(document.createTextNode(categoryName)); 
+
+    insertAfterElement.parentNode.insertBefore(span, insertAfterElement.nextSibling);
+}
+
+function insertAfter(newNode, referenceNode) {
+    referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
+}
 
 // -------------------- utility functions for alerts to display error messages --------------------
 

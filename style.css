@@ -264,9 +264,9 @@ button {
   font-size: 9px;
   text-transform: uppercase;
   letter-spacing: 1px;
-  color: rgba(255, 166, 0, 0.8);
+  color: rgba(151, 98, 0, 0.8);
   padding: 3px;
-  margin: 5px 0;
+  margin: 5px 3px;
   background-color: #fff;
   border-radius: 5px;
 }
