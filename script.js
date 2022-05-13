@@ -31,7 +31,7 @@ function showAllMealsForSearchString(e) {
                     // received data can be empty (no search-results for search-string) -> display message in UI 
                     showAlert('There is no match for your keywords - please try again'); 
                 } else {
-                    insertMealsIntoMealsDiv(data, searchString); 
+                    insertMealsIntoMealsDiv(data.meals, searchString); 
                 }
             }); 
     } else {
