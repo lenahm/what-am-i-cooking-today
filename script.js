@@ -7,6 +7,8 @@ const search = document.querySelector('.search');
 const submit = document.getElementById('submit'); 
 const inputMeal = document.getElementById('input-meal'); 
 const countriesAndCategories = document.querySelector('.countries-and-categories');
+const countries = document.querySelector('.countries'); 
+const categories = document.querySelector('.categories'); 
 const resultHeading = document.querySelector('.result-heading'); 
 const meals = document.querySelector('.meals'); 
 const singleMealInfo = document.querySelector('.single-meal-info'); 
@@ -29,17 +31,7 @@ function showAllMealsForSearchString(e) {
                     // received data can be empty (no search-results for search-string) -> display message in UI 
                     showAlert('There is no match for your keywords - please try again'); 
                 } else {
-                    hideElementsForMealsOverviewPage(); 
-                
-                    resultHeading.innerHTML = `<h3>Results for "${searchString}"</h3>`;
-                    meals.innerHTML = data.meals.map(meal => `
-                        <div class="meal">
-                            <img src="${meal.strMealThumb}" alt="${meal.strMeal}" />
-                            <div class="meal-info" data-mealID="${meal.idMeal}">
-                                <h5>${meal.strMeal}</h5>
-                            </div>
-                        </div>
-                    `).join('');
+                    insertMealsIntoMealsDiv(data, searchString); 
                 }
             }); 
     } else {
@@ -49,6 +41,36 @@ function showAllMealsForSearchString(e) {
             showAlert('Please enter some keywords for the meal you are looking for');
         }
     }
+}
+
+function showAllMealsForCategory(categoryName) {
+    fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?c=${categoryName}`)
+        .then(res => res.json())
+        .then(data => {
+            insertMealsIntoMealsDiv(data, categoryName); 
+        });
+}
+
+function showAllMealsForCountry(countryName) {
+    fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?a=${countryName}`)
+        .then(res => res.json())
+        .then(data => {
+            insertMealsIntoMealsDiv(data, countryName); 
+        });
+}
+
+function insertMealsIntoMealsDiv(data, resultHeadingName) {
+    hideElementsForMealsOverviewPage(); 
+
+    resultHeading.innerHTML = `<h3>Results for "${resultHeadingName}"</h3>`;
+    meals.innerHTML = data.meals.map(meal => `
+        <div class="meal">
+            <img src="${meal.strMealThumb}" alt="${meal.strMeal}" />
+            <div class="meal-info" data-mealID="${meal.idMeal}">
+                <h5>${meal.strMeal}</h5>
+            </div>
+        </div>
+    `).join('');
 }
 
 function getMealDetailsById(id, isRandomMeal) {
@@ -136,6 +158,7 @@ function showCountriesOnStartPage() {
 function addTagElementToDOM(categoryName, parentElement, insertAfterElement) {
     const span = document.createElement('span'); 
     span.className = 'tags'; 
+    span.setAttribute('tagname', categoryName); 
     span.appendChild(document.createTextNode(categoryName)); 
 
     insertAfterElement.parentNode.insertBefore(span, insertAfterElement.nextSibling);
@@ -256,3 +279,33 @@ backBtn.addEventListener('click', (e) => {
 
     showAllMealsForSearchString(e);
 });
+
+categories.addEventListener('click', e => {
+    const categoryTag = e.path.find(item => {
+        if (item.classList) {
+            return item.classList.contains('tags'); 
+        } else {
+            return false; 
+        }
+    }); 
+
+    if (categoryTag) {
+        const categoryName = categoryTag.getAttribute('tagname'); 
+        showAllMealsForCategory(categoryName); 
+    }
+}); 
+
+countries.addEventListener('click', e => {
+    const countryTag = e.path.find(item => {
+        if (item.classList) {
+            return item.classList.contains('tags'); 
+        } else {
+            return false; 
+        }
+    }); 
+
+    if (countryTag) {
+        const countryName = countryTag.getAttribute('tagname'); 
+        showAllMealsForCountry(countryName); 
+    }
+}); 
