@@ -11,7 +11,7 @@ const resultHeading = document.querySelector('.result-heading');
 const meals = document.querySelector('.meals'); 
 const singleMealInfo = document.querySelector('.single-meal-info'); 
 
-// main functionalites - search for a specific meal, get a random meal and search by categories or countries 
+// -------------------- main functionalites - search for a specific meal, get a random meal and search by categories or countries --------------------
 
 function showAllMealsForSearchString(e) {
     e.preventDefault();
@@ -26,13 +26,7 @@ function showAllMealsForSearchString(e) {
                     // received data can be empty (no search-results for search-string) -> display message in UI 
                     showAlert('There is no match for your keywords - please try again'); 
                 } else {
-                    // heading "results for search-string", meals-grid and new-search-button should now be shown 
-                    resultHeading.classList.remove('hide');
-                    meals.classList.remove('hide'); 
-                    newSearchBtn.classList.remove('hide'); 
-                    // searchbar and boxes for countries and categories should not be shown any longer
-                    search.classList.add('hide'); 
-                    countriesAndCategories.classList.add('hide');
+                    hideElementsForMealsOverviewPage(); 
                 
                     resultHeading.innerHTML = `<h3>Results for "${searchString}"</h3>`;
                     meals.innerHTML = data.meals.map(meal => `
@@ -54,7 +48,8 @@ function showAllMealsForSearchString(e) {
     }
 }
 
-function getMealDetailsById(id) {
+function getMealDetailsById(id, isRandomMeal) {
+    console.log(isRandomMeal); 
     fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`)
         .then(res => res.json())
         .then(data => {
@@ -71,11 +66,7 @@ function getMealDetailsById(id) {
                 }
             }
 
-            // single meal info page needs back-button to return to the meals-overview so the back-button must now be shown 
-            backBtn.classList.remove('hide'); 
-            // heading "results for search-string" and meals-grid should not be shown any longer
-            resultHeading.classList.add('hide');
-            meals.classList.add('hide'); 
+            hideElementsForSingleMealInfoPage(isRandomMeal);
 
             singleMealInfo.innerHTML = `
                 <div class="single-meal-info">
@@ -105,10 +96,11 @@ function getMealDetailsById(id) {
         });
 }
 
-// function getRandomMeal() {
-//     // TODO
-//     // https://www.themealdb.com/api/json/v1/1/random.php
-// }
+function getRandomMealId() {
+    fetch('https://www.themealdb.com/api/json/v1/1/random.php')
+        .then(res => res.json())
+        .then(data => getMealDetailsById(data.meals[0].idMeal, true)); 
+}
 
 // function searchMealByCategories() {
 //     // TODO 
@@ -122,7 +114,7 @@ function getMealDetailsById(id) {
 //     // https://www.themealdb.com/api/json/v1/1/filter.php?a=Canadian search for a meal by a nationality (e.g. canadian)
 // }
 
-// utility functions
+// -------------------- utility functions for alerts to display error messages --------------------
 
 function showAlert(message) {
     // clear any remaining alert
@@ -151,9 +143,56 @@ function clearAlert() {
     }
 }
 
-// event listeners 
+// -------------------- utility functions to hide and unhide html-elements --------------------
+
+function hideElementsForStartPage() {
+    // searchbar and boxes for countries and categories should be available, the rest should be hidden
+    unhideHtmlElement(search); 
+    unhideHtmlElement(countriesAndCategories); 
+
+    hideHtmlElement(resultHeading); 
+    hideHtmlElement(meals); 
+    hideHtmlElement(newSearchBtn); 
+    hideHtmlElement(backBtn); 
+}
+
+function hideElementsForMealsOverviewPage() {
+    // result-heading, meals-overview and new-search-button should be available, the rest should be hidden 
+    unhideHtmlElement(resultHeading);
+    unhideHtmlElement(meals);
+    unhideHtmlElement(newSearchBtn);
+
+    hideHtmlElement(search); 
+    hideHtmlElement(countriesAndCategories); 
+    hideHtmlElement(backBtn); 
+}
+
+function hideElementsForSingleMealInfoPage(isRandomMeal) {
+    // new-search-button (to return to the meals-overview) should be available in every case, back-btn should only be available if it is no random meal, the rest should be hidden 
+    unhideHtmlElement(newSearchBtn); 
+    isRandomMeal ? hideHtmlElement(backBtn) : unhideHtmlElement(backBtn); 
+
+    hideHtmlElement(search);
+    hideHtmlElement(countriesAndCategories);
+    hideHtmlElement(resultHeading);
+    hideHtmlElement(meals);
+}
+
+function hideHtmlElement(htmlElement) {
+    // hide (undisplaying) means adding the utility css-class .hide (display: none)
+    htmlElement.classList.add('hide'); 
+}
+
+function unhideHtmlElement(htmlElement) {
+    // unhide (displaying) means removing the utility css-class .hide (display: none)
+    htmlElement.classList.remove('hide'); 
+}
+
+// -------------------- event listeners --------------------
 
 submit.addEventListener('submit', showAllMealsForSearchString);
+
+randomBtn.addEventListener('click', getRandomMealId); 
 
 meals.addEventListener('click', e => {
     const mealInfo = e.path.find(item => {
@@ -171,12 +210,7 @@ meals.addEventListener('click', e => {
 }); 
 
 newSearchBtn.addEventListener('click', () => {
-    // searchbar and boxes for countries and categories should now be shown 
-    search.classList.remove('hide'); 
-    countriesAndCategories.classList.remove('hide');
-    // new-search- and back-button should not be shown any longer 
-    newSearchBtn.classList.add('hide'); 
-    backBtn.classList.add('hide');
+    hideElementsForStartPage();
 
     // clear elements
     resultHeading.innerHTML = ''; 
@@ -186,9 +220,6 @@ newSearchBtn.addEventListener('click', () => {
 })
 
 backBtn.addEventListener('click', (e) => {
-    // back-button should not be shown any longer
-    backBtn.classList.add('hide'); 
-
     // clear single-meal-info-element
     singleMealInfo.innerHTML = '<div class="single-meal-info"></div>';
 
