@@ -302,9 +302,5 @@ countries.addEventListener('click', e => {
 }); 
 
 function itemContainsSpecificClass(item, className) {
-    if (item.classList) {
-        return item.classList.contains(className); 
-    } else {
-        return false; 
-    }
+    return item.classList ? item.classList.contains(className) : false; 
 }
