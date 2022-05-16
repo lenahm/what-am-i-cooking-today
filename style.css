@@ -160,8 +160,8 @@ button {
   margin-top: 20px;
 }
 
-.countries,
-.categories {
+.countries-and-categories .countries,
+.countries-and-categories .categories {
   width: 500px;
   padding: 10px;
   background-color: rgba(255, 217, 0, 0.3);
@@ -287,4 +287,223 @@ button {
 .alert {
   padding: 10px 0;
   background: rgba(158, 114, 114, 0.8);
+}
+
+/* responsive design for tablets */
+
+@media (max-width: 1200px) {
+  /* responsive styling for the start page */
+  .container {
+    width: 700px;
+  }
+
+  h1 {
+    font-size: 50px;
+    margin: 40px 0;
+  }
+
+  h3 {
+    font-size: 1rem;
+  }
+
+  .search {
+    width: 600px;
+    margin: 40px auto 20px auto;
+  }
+
+  input[type='text'] {
+    width: 250px;
+  }
+
+  .countries-and-categories {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .countries-and-categories .countries {
+    margin-right: 0;
+    margin-bottom: 20px;
+  }
+
+  .countries-and-categories .countries,
+  .countries-and-categories .categories {
+    width: 580px;
+  }
+
+  .alert {
+    font-size: 0.8rem;
+  }
+
+  /* responsive styling for the meals-overview-page */
+  #new-search-btn {
+    width: 600px;
+  }
+
+  .meals {
+    grid-template-columns: repeat(7, 1fr);
+    grid-gap: 10px;
+  }
+
+  .meal {
+    height: 70px;
+    width: 70px;
+  }
+
+  .meal img {
+    border: 1px #fff solid;
+  }
+
+  .meal-info {
+    font-size: 0.9rem;
+  }
+
+  /* responsive styling for the single-meal-details-info-page */
+  #back-btn {
+    width: 600px;
+  }
+
+  .flex-row {
+    overflow-y: scroll;
+    height: 500px;
+  }
+
+  .single-meal-info h3,
+  .single-meal-info h4 {
+    font-size: 0.8rem;
+  }
+
+  .single-meal-info > div {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .single-meal-info img {
+    height: 200px;
+    width: 200px;
+    border: 1px #fff solid;
+  }
+
+  .single-meal-info .instructions {
+    margin: 20px 0;
+  }
+}
+
+/* responsive design for smartphones */
+
+@media (max-width: 450px) {
+  /* responsive styling for the start page */
+  .container {
+    width: 350px;
+  }
+
+  h1 {
+    font-size: 25px;
+    margin: 20px 0;
+  }
+
+  h3 {
+    font-size: 0.8rem;
+  }
+
+  h4 {
+    font-size: 0.8rem;
+  }
+
+  .search {
+    width: 300px;
+    flex-direction: column;
+    padding: 20px 0;
+    margin: 20px auto 20px auto;
+  }
+
+  .search p {
+    margin-top: 15px;
+    font-size: 0.8rem;
+    margin-left: 0;
+  }
+
+  #random-btn {
+    margin-left: 0;
+  }
+
+  .search button {
+    margin-top: 5px;
+  }
+
+  input[type='text'] {
+    width: 200px;
+    font-size: 12px;
+  }
+
+  button {
+    font-size: 12px;
+  }
+
+  .countries-and-categories {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .countries-and-categories .countries {
+    margin-right: 0;
+    margin-bottom: 10px;
+  }
+
+  .countries-and-categories .tags {
+    font-size: 9px;
+  }
+
+  .countries-and-categories .countries,
+  .countries-and-categories .categories {
+    width: 280px;
+  }
+
+  .alert {
+    font-size: 0.7rem;
+  }
+
+  /* responsive styling for the meals-overview-page */
+  #new-search-btn {
+    width: 300px;
+  }
+
+  .meals {
+    grid-template-columns: repeat(5, 1fr);
+    grid-gap: 8px;
+  }
+
+  .meal {
+    height: 50px;
+    width: 50px;
+  }
+
+  .meal img {
+    border: 1px #fff solid;
+  }
+
+  .meal-info {
+    font-size: 0.7rem;
+  }
+
+  /* responsive styling for the single-meal-details-info-page */
+  #back-btn {
+    width: 300px;
+  }
+
+  .flex-row {
+    overflow-y: scroll;
+    height: 450px;
+  }
+
+  .single-meal-info {
+    padding: 0 15px;
+  }
+
+  .single-meal-info img {
+    height: 180px;
+    width: 180px;
+    border: 1px #fff solid;
+  }
 }
