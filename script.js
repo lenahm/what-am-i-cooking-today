@@ -16,6 +16,10 @@ const singleMealInfo = document.querySelector('.single-meal-info');
 showCategoriesOnStartPage(); 
 showCountriesOnStartPage();
 
+mealsViaCountries = false; 
+mealsViaCategories = false; 
+let categoryName, countryName; 
+
 // -------------------- main functionalites - search for a specific meal, get a random meal and search by categories or countries --------------------
 
 function showAllMealsForSearchString(e) {
@@ -274,20 +278,29 @@ newSearchBtn.addEventListener('click', () => {
     meals.innerHTML = '<div class="meal"></div>';
     singleMealInfo.innerHTML = '<div class="single-meal-info"></div>';
     inputMeal.value = '';
+    mealsViaCategories = false; 
+    mealsViaCountries = false; 
 })
 
 backBtn.addEventListener('click', (e) => {
     // clear single-meal-info-element
     singleMealInfo.innerHTML = '<div class="single-meal-info"></div>';
 
-    showAllMealsForSearchString(e);
+    if (mealsViaCategories) {
+        showAllMealsForCategory(categoryName); 
+    } else if (mealsViaCountries) {
+        showAllMealsForCountry(countryName);
+    } else {
+        showAllMealsForSearchString(e);
+    }
 });
 
 categories.addEventListener('click', e => {
     const categoryTag = e.path.find(item => itemContainsSpecificClass(item, 'tags')); 
 
     if (categoryTag) {
-        const categoryName = categoryTag.getAttribute('tagname'); 
+        categoryName = categoryTag.getAttribute('tagname');
+        mealsViaCategories = true; 
         showAllMealsForCategory(categoryName); 
     }
 }); 
@@ -296,7 +309,8 @@ countries.addEventListener('click', e => {
     const countryTag = e.path.find(item => itemContainsSpecificClass(item, 'tags')); 
 
     if (countryTag) {
-        const countryName = countryTag.getAttribute('tagname'); 
+        countryName = countryTag.getAttribute('tagname'); 
+        mealsViaCountries = true; 
         showAllMealsForCountry(countryName); 
     }
 }); 
